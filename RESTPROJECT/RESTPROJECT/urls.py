@@ -18,8 +18,14 @@ from django.conf import settings
 from django.conf.urls.static import static
 from django.contrib import admin
 from django.urls import path , include
-
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,     # login
+    TokenRefreshView         # refresh
+)
 urlpatterns = [
     path("admin/", admin.site.urls),
     path('apis/' , include('APIs.urls')),
+    path('authy/', include('authy.urls')),  # your app endpoints
+    path('authy/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),  # login
+    path('authy/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'), # refresh
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
